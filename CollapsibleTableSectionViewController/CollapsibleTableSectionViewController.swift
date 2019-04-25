@@ -149,6 +149,7 @@ extension CollapsibleTableSectionViewController: CollapsibleTableViewHeaderDeleg
     
     func toggleSection(_ section: Int) {
         let sectionsNeedReload = getSectionsNeedReload(section)
+        
         _tableView.reloadSections(IndexSet(sectionsNeedReload), with: .automatic)
     }
     

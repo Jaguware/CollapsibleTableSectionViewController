@@ -24,13 +24,14 @@ open class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         super.init(reuseIdentifier: reuseIdentifier)
         
         // Content View
-        contentView.backgroundColor = UIColor(hex: 0x2E3944)
+        contentView.backgroundColor = #colorLiteral(red: 0.5322984457, green: 0.7380356193, blue: 0.8424394727, alpha: 1)
         
         let marginGuide = contentView.layoutMarginsGuide
         
         // Arrow label
         contentView.addSubview(arrowLabel)
         arrowLabel.textColor = UIColor.white
+        arrowLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 17)
         arrowLabel.translatesAutoresizingMaskIntoConstraints = false
         arrowLabel.widthAnchor.constraint(equalToConstant: 12).isActive = true
         arrowLabel.topAnchor.constraint(equalTo: marginGuide.topAnchor).isActive = true
@@ -40,6 +41,7 @@ open class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
         // Title label
         contentView.addSubview(titleLabel)
         titleLabel.textColor = UIColor.white
+        titleLabel.font = UIFont(name: "HelveticaNeue-Bold", size: 17)
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.topAnchor.constraint(equalTo: marginGuide.topAnchor).isActive = true
         titleLabel.trailingAnchor.constraint(equalTo: marginGuide.trailingAnchor).isActive = true
@@ -76,18 +78,18 @@ open class CollapsibleTableViewHeader: UITableViewHeaderFooterView {
     
 }
 
-extension UIColor {
-    
-    convenience init(hex:Int, alpha:CGFloat = 1.0) {
-        self.init(
-            red:   CGFloat((hex & 0xFF0000) >> 16) / 255.0,
-            green: CGFloat((hex & 0x00FF00) >> 8)  / 255.0,
-            blue:  CGFloat((hex & 0x0000FF) >> 0)  / 255.0,
-            alpha: alpha
-        )
-    }
-    
-}
+//extension UIColor {
+//
+//    convenience init(hex:Int, alpha:CGFloat = 1.0) {
+//        self.init(
+//            red:   CGFloat((hex & 0xFF0000) >> 16) / 255.0,
+//            green: CGFloat((hex & 0x00FF00) >> 8)  / 255.0,
+//            blue:  CGFloat((hex & 0x0000FF) >> 0)  / 255.0,
+//            alpha: alpha
+//        )
+//    }
+//
+//}
 
 extension UIView {
     
