@@ -30,14 +30,29 @@ open class CollapsibleTableSectionViewController: UIViewController {
     
     public var delegate: CollapsibleTableSectionDelegate?
     
+    //fileprivate var _tableView: UITableView!
     fileprivate var _tableView: UITableView!
     fileprivate var _sectionsState = [Int : Bool]()
     
     public func isSectionCollapsed(_ section: Int) -> Bool {
         if _sectionsState.index(forKey: section) == nil {
-            _sectionsState[section] = delegate?.shouldCollapseByDefault?(_tableView) ?? false
+            // If the table is set to collapse by default, the code below
+            // collapses all but the first section.
+            if section == 0
+            {
+                _sectionsState[section] = false
+            }else
+            {
+                _sectionsState[section] = delegate?.shouldCollapseByDefault?(_tableView) //?? false
+            }
         }
+        
         return _sectionsState[section]!
+    }
+    
+    public func toggleCollapseAll(_ section: Int, collapsed: Bool)
+    {
+        _sectionsState[section] = collapsed
     }
     
     func getSectionsNeedReload(_ section: Int) -> [Int] {
@@ -52,6 +67,7 @@ open class CollapsibleTableSectionViewController: UIViewController {
         let shouldCollapseOthers = delegate?.shouldCollapseOthers?(_tableView) ?? false
         
         if !isCollapsed && shouldCollapseOthers {
+            print("Collapse All")
             // Find out which sections need to be collapsed
             let filteredSections = _sectionsState.filter { !$0.value && $0.key != section }
             let sectionsNeedCollapse = filteredSections.map { $0.key }
@@ -80,6 +96,7 @@ open class CollapsibleTableSectionViewController: UIViewController {
         
         // Auto layout the tableView
         view.addSubview(_tableView)
+        
         _tableView.translatesAutoresizingMaskIntoConstraints = false
         _tableView.topAnchor.constraint(equalTo: topLayoutGuide.topAnchor).isActive = true
         _tableView.bottomAnchor.constraint(equalTo: bottomLayoutGuide.bottomAnchor).isActive = true
@@ -123,8 +140,19 @@ extension CollapsibleTableSectionViewController: UITableViewDataSource, UITableV
         let title = delegate?.collapsibleTableView?(tableView, titleForHeaderInSection: section) ?? ""
         
         header.titleLabel.text = title
-        header.arrowLabel.text = ">"
-        header.setCollapsed(isSectionCollapsed(section))
+        //header.arrowLabel.text = ">"
+        let headerImageCollapsed = #imageLiteral(resourceName: "disclosureIndicator")
+        let headerImageExpanded = UIImage(named: "disclosureIndicatorExpanded")
+        
+        if isSectionCollapsed(section)
+        {
+            header.arrowImageView.image = headerImageCollapsed
+        }else
+        {
+            header.arrowImageView.image = headerImageExpanded
+        }
+        
+        //header.setCollapsed(isSectionCollapsed(section))
         
         header.section = section
         header.delegate = self
